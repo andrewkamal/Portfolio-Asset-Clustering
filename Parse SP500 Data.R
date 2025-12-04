@@ -23,7 +23,7 @@ cat("Fetching S&P 500 ticker list...\n")
 url <- "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
 sp500 <- read_html(url) %>%
   html_table(fill = TRUE) %>%
-  .[[2]]
+  .[[1]]
 
 # Clean ticker symbols (some have dots)
 tickers <- sp500$Symbol
@@ -47,8 +47,8 @@ cat("Saved ticker list to 'sp500_ticker_info.csv'\n\n")
 # ============================================
 
 # Date range: 2 years
-start_date <- Sys.Date() - 730
-end_date <- Sys.Date()
+start_date <- "2023-11-28"
+end_date <- "2025-12-1"
 
 cat(sprintf("Fetching data from %s to %s\n", start_date, end_date))
 cat("This will take approximately 15-20 minutes...\n\n")
@@ -267,9 +267,7 @@ cat("✓ Data also saved to CSV files\n")
 # ============================================
 
 cat("\n")
-cat("="*60, "\n")
 cat("DATA COLLECTION COMPLETE\n")
-cat("="*60, "\n")
 cat(sprintf("Total stocks: %d\n", length(unique(combined_data$Ticker))))
 cat(sprintf("Total rows: %s\n", format(nrow(combined_data), big.mark = ",")))
 cat(sprintf("Date range: %s to %s\n", min(combined_data$Date), max(combined_data$Date)))
@@ -280,7 +278,6 @@ cat("  - sp500_summary.csv (summary statistics)\n")
 cat("  - sp500_ticker_info.csv (ticker information)\n")
 cat("\n")
 cat("Ready for Python feature extraction!\n")
-cat("="*60, "\n")
 
 # Display summary by sector
 cat("\nStocks by Sector:\n")
