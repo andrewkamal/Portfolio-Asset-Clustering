@@ -51,7 +51,6 @@ start_date <- "2023-11-28"
 end_date <- "2025-12-1"
 
 cat(sprintf("Fetching data from %s to %s\n", start_date, end_date))
-cat("This will take approximately 15-20 minutes...\n\n")
 
 # Storage for data
 all_data <- list()
@@ -248,41 +247,4 @@ if (length(failed_tickers) > 0) {
 
 # Save workbook
 saveWorkbook(wb, "sp500_stock_data.xlsx", overwrite = TRUE)
-
-cat("\n✓ Data saved to 'sp500_stock_data.xlsx'\n")
-
-# ============================================
-# 8. SAVE AS CSV (ALTERNATIVE FORMAT)
-# ============================================
-
-cat("\nSaving to CSV...\n")
-
 write.csv(combined_data, "sp500_stock_data.csv", row.names = FALSE)
-write.csv(summary_stats, "sp500_summary.csv", row.names = FALSE)
-
-cat("✓ Data also saved to CSV files\n")
-
-# ============================================
-# 9. PRINT SUMMARY
-# ============================================
-
-cat("\n")
-cat("DATA COLLECTION COMPLETE\n")
-cat(sprintf("Total stocks: %d\n", length(unique(combined_data$Ticker))))
-cat(sprintf("Total rows: %s\n", format(nrow(combined_data), big.mark = ",")))
-cat(sprintf("Date range: %s to %s\n", min(combined_data$Date), max(combined_data$Date)))
-cat(sprintf("Files created:\n"))
-cat("  - sp500_stock_data.xlsx (main data)\n")
-cat("  - sp500_stock_data.csv (alternative format)\n")
-cat("  - sp500_summary.csv (summary statistics)\n")
-cat("  - sp500_ticker_info.csv (ticker information)\n")
-cat("\n")
-cat("Ready for Python feature extraction!\n")
-
-# Display summary by sector
-cat("\nStocks by Sector:\n")
-sector_summary <- combined_data %>%
-  group_by(sector) %>%
-  summarise(Count = n_distinct(Ticker)) %>%
-  arrange(desc(Count))
-print(sector_summary)
