@@ -165,38 +165,7 @@ if (nrow(anomalies) > 0) {
 }
 
 # ============================================
-# 5. ADD BASIC CALCULATED COLUMNS
-# ============================================
-
-cat("\nAdding calculated columns...\n")
-
-combined_data <- combined_data %>%
-  group_by(Ticker) %>%
-  arrange(Date) %>%
-  mutate(
-    # Daily returns
-    Daily_Return = (Close / lag(Close)) - 1,
-    
-    # Log returns
-    Log_Return = log(Close / lag(Close)),
-    
-    # True Range for ATR calculation
-    True_Range = pmax(High - Low, 
-                      abs(High - lag(Close)), 
-                      abs(Low - lag(Close)),
-                      na.rm = TRUE),
-    
-    # Price changes
-    Price_Change = Close - lag(Close),
-    
-    # Volume change
-    Volume_Change = Volume - lag(Volume),
-    Volume_Change_Pct = (Volume / lag(Volume)) - 1
-  ) %>%
-  ungroup()
-
-# ============================================
-# 6. MERGE WITH SECTOR INFORMATION
+# 5. MERGE WITH SECTOR INFORMATION
 # ============================================
 
 cat("\nMerging with sector information...\n")
@@ -205,7 +174,7 @@ combined_data <- combined_data %>%
   left_join(ticker_info, by = c("Ticker" = "ticker"))
 
 # ============================================
-# 7. SAVE TO EXCEL
+# 6. SAVE TO EXCEL
 # ============================================
 
 cat("\nSaving to Excel...\n")
